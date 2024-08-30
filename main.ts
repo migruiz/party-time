@@ -1,18 +1,40 @@
-robot.playSound(Sounds.Party)
-// text
-basic.forever(function () {
-    robot.say("PARTY TIME !!", Language.English)
-    basic.pause(2000)
+let music_is_on = false
+let is_moving = false
+let is_speaking = false
+input.onButtonPressed(Button.A, function () {
+    music_is_on = !(music_is_on)
+    if (music_is_on) {
+        robot.playSound(Sounds.Party)
+    } else {
+        robot.stopAllSounds()
+    }
+})
+input.onButtonPressed(Button.AB, function () {
+    is_moving = !(is_moving)
+})
+input.onButtonPressed(Button.B, function () {
+    is_speaking = !(is_speaking)
 })
 // eye brous
 basic.forever(function () {
-    robot.moveEyebrows(Eyebrows.Both, EyebrowPosition.Up)
-    robot.moveEyebrows(Eyebrows.Both, EyebrowPosition.Center)
+    if (is_moving) {
+        robot.moveEyebrows(Eyebrows.Both, EyebrowPosition.Up)
+        robot.moveEyebrows(Eyebrows.Both, EyebrowPosition.Center)
+    }
+})
+// text
+basic.forever(function () {
+    if (is_speaking) {
+        robot.say("PARTY TIME !!", Language.English)
+        basic.pause(5000)
+    }
 })
 // hand
 basic.forever(function () {
-    robot.moveHand(HandPosition.Right)
-    robot.moveHand(HandPosition.Left)
+    if (is_moving) {
+        robot.moveHand(HandPosition.Right)
+        robot.moveHand(HandPosition.Left)
+    }
 })
 // body light
 basic.forever(function () {
@@ -57,10 +79,14 @@ basic.forever(function () {
 })
 // text
 basic.forever(function () {
-    robot.blowBubbles()
-    basic.pause(4000)
-    robot.stopBubbles()
-    basic.pause(3000)
+    if (is_moving) {
+        robot.blowBubbles()
+        basic.pause(4000)
+        robot.stopBubbles()
+        basic.pause(3000)
+    } else {
+        robot.stopBubbles()
+    }
 })
 // eye light
 basic.forever(function () {
@@ -75,6 +101,8 @@ basic.forever(function () {
 })
 // eyes
 basic.forever(function () {
-    robot.moveEye(Eyes.Both, EyePosition.Left)
-    robot.moveEye(Eyes.Both, EyePosition.Right)
+    if (is_moving) {
+        robot.moveEye(Eyes.Both, EyePosition.Left)
+        robot.moveEye(Eyes.Both, EyePosition.Right)
+    }
 })
